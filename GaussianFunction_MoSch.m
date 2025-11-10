@@ -1,8 +1,8 @@
 function result = GaussianFunction_MoSch(myX, myParameters)
-% Last change: Maikol, 10.11.2025 14:40
+% Last change: Lars, 10.11.2025 15:10
 % GaussianFunction_MoSch calculates Guass distributed values and plots them
 %
-%   out = GaussianFunction_MoSch(myX, myParameters)
+%   result = GaussianFunction_MoSch(myX, myParameters)
 %
 %   myX :           Vector or scalar of the x-value(s)
 %   myParameters:   Vector [mu, sigma] with mean (mu) and standard
@@ -83,6 +83,7 @@ if nargout == 0 % displays the plot only if no output argument is specified
         if isempty(get(0,'CurrentFigure'))
         figure
         end % creates a new blank figure window, if there is not already one open
+        % (with "figure;" MATLAB provided an endless number of plots for any myX vector)
 
     % Plot 1: smooth curve
     plot(smoothXresult, smoothYresult, 'b-'); % smooth curve is displayed as blue line
@@ -92,14 +93,14 @@ if nargout == 0 % displays the plot only if no output argument is specified
     plot(myX, result, 'ro', 'LineStyle', 'none'); % myX values are displayed in red dots
 
     % calculate margins for the plot
-    maxY = CONST_FACTOR / sigma; % maximum y-value
-    yMargin = maxY * PLOT_MARGIN_FACTOR; % y-margin
-    xRange = smoothXmax - smoothXmin; % range of X
-    xMargin = xRange * PLOT_MARGIN_FACTOR; % x-margin
+    maximumY = CONST_FACTOR / sigma; % maximum y-value
+    marginY = maximumY * PLOT_MARGIN_FACTOR; % y-margin
+    rangeX = smoothXmax - smoothXmin; % range of X
+    marginX = rangeX * PLOT_MARGIN_FACTOR; % x-margin
 
     % Set axis with margins on the sides
-    xlim([smoothXmin - xMargin, smoothXmax + xMargin]); % apply x-margin
-    ylim([0 - yMargin, maxY + yMargin]); %apply y-margin
+    xlim([smoothXmin - marginX, smoothXmax + marginX]); % apply x-margin
+    ylim([0 - marginY, maximumY + marginY]); %apply y-margin
 
     hold off; % set back to the default to let go of the current plot and create a new one from here
 
