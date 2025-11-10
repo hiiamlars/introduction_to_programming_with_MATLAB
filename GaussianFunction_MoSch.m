@@ -1,5 +1,5 @@
 function result = GaussianFunction_MoSch(myX, myParameters)
-% Last change: Lars, 10.11.2025 12:50
+% Last change: Maikol, 10.11.2025 14:40
 % GaussianFunction_MoSch calculates Guass distributed values and plots them
 %
 %   out = GaussianFunction_MoSch(myX, myParameters)
@@ -80,7 +80,9 @@ smoothYresult = CONST_FACTOR / sigma * exp(-0.5 * ((smoothXresult - mu)./sigma).
 
 if nargout == 0 % displays the plot only if no output argument is specified
 
-    figure; % creates a new blank figure window
+        if isempty(get(0,'CurrentFigure'))
+        figure
+        end % creates a new blank figure window, if there is not already one open
 
     % Plot 1: smooth curve
     plot(smoothXresult, smoothYresult, 'b-'); % smooth curve is displayed as blue line
