@@ -1,7 +1,8 @@
 function [ out ] = AnalyseData_MoSch( myFileName, myDataDirectory ) 
 %% ---Help Function--------------------------------------------------------
+%ANALYSEDATA_MOSCH Loads and compares experimental data.
 %
-% Last edited: MoSch, 28.11.2025
+% Last edited: Lars, 02.12.2025
 %
 % This function loads experimental data (A, B, x) from a MAT-file and:
 %  - plots the empirical data sets A and B (different colors and markers)
@@ -47,7 +48,7 @@ TEXT_BG_COLOR  = [0 0 0 0.4];  % semi-transparent black background
 TEXT_V_ALIGN   = 'top'; % general alignment of text
 TEXT_COLOR     = [1 1 1]; % text color
 
-%% ---Check Argument Amount---
+%% ---Check Argument Amount (and additionally the format for amount = 2)---
 
 if nargin < 2 % In case of less than two arguments ...
     [myFileName, myDataDirectory] = uigetfile('*.mat', 'Select data file'); % ... open uigetfile
@@ -60,28 +61,32 @@ elseif nargin > 2 % Else in case of more than two arguments ...
     error([CURRENT_FUNCTION_NAME ':TooManyInputs'], ...
         'The function expects a maximum of two inputs (myFileName, myDataDirectory).'); % ... print this message
 
-elseif nargin == 2
-    assert(isfolder(myDataDirectory), ['The specified directory ''' myDataDirectory ''' does not exist.'])
-    assert(isfile(fullfile(myDataDirectory, myFileName)), ['The specified file ' myFileName ' does not exist in the directory ' myDataDirectory '.'])
-    
-end
-
-%% ---Check Content---
-
-if ~(ischar(myFileName) || isstring(myFileName)) % If 'myFileName' is NOT formated as character or string ...
-    error('ShowExperimentalData_MoSch:InvalidFileName', ... % ... print this message
+elseif nargin == 2 % Else in case of exactly two arguments ...
+    % this content check must be done first to return senseful error
+    % messages even in case the input is not correctly formated
+    assert(ischar(myFileName) || isstring(myFileName), ...
         'myFileName must be a character vector or string.');
-end
-
-if ~(ischar(myDataDirectory) || isstring(myDataDirectory)) % If 'myDataDirectory' is NOT formated as character or string ...
-    error('ShowExperimentalData_MoSch:InvalidDataDirectory', ... % ... print this message
+    assert(ischar(myDataDirectory) || isstring(myDataDirectory), ...
         'myDataDirectory must be a character vector or string.');
+    % only now the directory and file can be checked
+    assert(isfolder(myDataDirectory), ...
+        ['The specified directory ''' myDataDirectory ''' does not exist.']);
+    assert(isfile(fullfile(myDataDirectory, myFileName)), ...
+        ['The specified file ' myFileName ' does not exist in the directory ' myDataDirectory '.']);
 end
 
-%% ---Load Dataset--- 
+%% ---Load (and check) Dataset--- 
 
 fullPath = fullfile(myDataDirectory, myFileName);
 data = load(fullPath);
+
+%% ---Check Data---
+
+% optional as we should are told the data is formated this way
+assert(isfield(data,'A') && isfield(data,'B') && isfield(data,'x'), ...
+       'The MAT-file must contain variables A, B and x.');
+
+%% ---Assign Data---
 
 A = data.A;   % empirical data A
 B = data.B;   % empirical data B
