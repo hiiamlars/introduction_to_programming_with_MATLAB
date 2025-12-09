@@ -48,7 +48,7 @@ TEXT_BG_COLOR  = [0 0 0 0.4];  % semi-transparent black background
 TEXT_V_ALIGN   = 'top'; % general alignment of text
 TEXT_COLOR     = [1 1 1]; % text color
 
-%% ---Check Argument Amount (and additionally the format for amount = 2)---
+%% ---Check Argument Amount---
 
 if nargin < 2 % In case of less than two arguments ...
     [myFileName, myDataDirectory] = uigetfile('*.mat', 'Select data file'); % ... open uigetfile
