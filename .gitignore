@@ -1,0 +1,10 @@
+# MATLAB automatic backups
+*.asv
+*~
+
+# Local MATLAB Project metadata
+resources/
+
+# OS-specific temporary files
+.DS_Store
+Thumbs.db
